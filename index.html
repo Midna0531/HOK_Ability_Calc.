@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a2b">
+  <meta name="description" content="아너 오브 킹즈(HOK) 실력 평균 계산기 — 매치 기록을 입력하고 실력 점수와 등급을 바로 확인하세요.">
+  <title>HOK 실력 평균 계산기 | Ariel</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1220;--surface:#141f31;--surface2:#19263b;--border:#2b3b52;--muted:#9fb0c6;--ink:#f5f7fc;--gold:#f4c86c;--cyan:#70d5f1;--green:#67dbac;--danger:#ff8c95;--shadow:0 20px 60px rgba(0,0,0,.19)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--ink);background:radial-gradient(ellipse 60% 35% at 15% -5%,rgba(57,105,162,.21),transparent 70%),radial-gradient(ellipse 45% 35% at 90% 5%,rgba(210,161,72,.09),transparent 75%),var(--bg);min-height:100vh}
+    button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+    .shell{max-width:1510px;margin:0 auto;padding:32px 26px 60px}
+    .masthead{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:28px}.brandline{display:flex;align-items:center;gap:10px;color:var(--gold);font-size:12px;letter-spacing:.22em;font-weight:800;text-transform:uppercase}.emblem{display:grid;place-items:center;width:28px;height:28px;border:1px solid #846d3b;border-radius:8px;background:rgba(244,200,108,.12);font-size:15px}.masthead h1{font-size:clamp(26px,3vw,40px);letter-spacing:-.045em;line-height:1.22;margin:13px 0 10px;font-weight:850}.subtitle{color:var(--muted);margin:0;font-size:14px;line-height:1.65}.head-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end;padding-top:7px}.btn{border:1px solid var(--border);background:#1c2a40;color:var(--ink);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;transition:background .15s,border-color .15s,transform .15s}.btn:hover{background:#283b55;border-color:#5b7493}.btn:active{transform:translateY(1px)}.btn-gold{background:linear-gradient(135deg,#f6d990,#dfb45a);color:#332514;border-color:#f6d990}.btn-gold:hover{background:#ffe1a1}
+    .layout{display:grid;grid-template-columns:minmax(345px,1.06fr) minmax(285px,.86fr) minmax(410px,1.2fr);gap:16px;align-items:start}.panel{background:linear-gradient(160deg,rgba(26,40,60,.97),rgba(17,29,46,.99));border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;min-width:0}.panel-head{padding:21px 22px 15px;display:flex;justify-content:space-between;align-items:center;gap:12px}.eyebrow{font-size:11px;letter-spacing:.17em;font-weight:800;color:var(--gold);text-transform:uppercase}.panel-head h2{margin:5px 0 0;font-size:18px;letter-spacing:-.03em}.panel-head p{font-size:12px;color:var(--muted);margin:5px 0 0}.panel-body{padding:4px 20px 22px}
+    .pill{font-size:11px;color:var(--green);background:rgba(103,219,172,.09);border:1px solid rgba(103,219,172,.2);padding:5px 8px;border-radius:99px;white-space:nowrap}
+    .input-section{margin-top:13px}.section-label{font-size:11px;font-weight:800;letter-spacing:.11em;color:#c7d3e2;text-transform:uppercase;margin:0 0 9px}.input-grid{display:grid;gap:10px}.input-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.input-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.input-grid.one{grid-template-columns:1fr}
+    .field{border-radius:12px;border:1px solid #426078;background:linear-gradient(180deg,rgba(92,179,216,.13),rgba(50,122,167,.08));padding:12px 11px 11px;min-width:0}.field.yellow{border-color:#857743;background:linear-gradient(180deg,rgba(250,222,108,.13),rgba(202,165,52,.06))}.field.pink{border-color:#82577f;background:linear-gradient(180deg,rgba(243,143,219,.12),rgba(180,78,153,.06))}.field.purple{border-color:#845d91;background:linear-gradient(180deg,rgba(205,145,224,.13),rgba(142,72,161,.07))}.field.orange{border-color:#9b7844;background:linear-gradient(180deg,rgba(250,183,78,.13),rgba(174,112,37,.07))}.field.ice{border-color:#567b9b;background:linear-gradient(180deg,rgba(137,193,248,.12),rgba(75,139,203,.06))}.field label{display:block;font-size:12px;color:#d5e1f0;font-weight:750;margin-bottom:7px}.field .unit{font-size:11px;color:var(--muted);font-weight:500}.field input{display:block;width:100%;background:rgba(7,15,29,.62);border:1px solid #3d516a;color:white;border-radius:8px;padding:9px 10px;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;min-width:0;transition:border-color .15s,background .15s}.field input:hover{border-color:#7792b0}.field input:focus{background:#101d30;border-color:var(--cyan);outline:none;box-shadow:0 0 0 2px rgba(112,213,241,.16)}.field input[aria-invalid=true]{border-color:var(--danger)}.input-hint{margin:14px 1px 0;color:var(--muted);font-size:12px;line-height:1.6}.error{color:#ffd2d5;background:rgba(204,65,81,.13);border:1px solid rgba(255,140,149,.32);border-radius:10px;font-size:12px;line-height:1.55;padding:11px 13px;margin-top:13px}.error[hidden]{display:none}
+    .result-top{margin:6px 20px 15px;border:1px solid #3b5672;background:linear-gradient(140deg,rgba(45,79,108,.3),rgba(14,30,48,.3));border-radius:13px;padding:15px}.stat-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0}.stat-row+.stat-row{border-top:1px solid rgba(167,196,222,.12)}.stat-row .stat-title{font-size:12px;color:#b9c9db;line-height:1.5}.stat-row .stat-title strong{display:block;color:#e9f3fc;font-size:13px}.stat-row .stat-number{color:var(--cyan);font-size:26px;font-weight:850;font-variant-numeric:tabular-nums;white-space:nowrap}.stat-row .stat-number small{font-size:12px;font-weight:650;color:var(--muted);margin-left:4px}
+    .scorecard{margin:0 20px 15px;border:1px solid rgba(244,200,108,.34);background:radial-gradient(circle at 90% 5%,rgba(244,200,108,.13),transparent 60%),#18243a;border-radius:15px;padding:19px 18px 18px}.scorecard .kicker{font-size:12px;color:#e4d5b3;font-weight:700}.score-value{font-size:clamp(48px,5vw,70px);font-weight:900;letter-spacing:-.07em;color:#f7d68d;font-variant-numeric:tabular-nums;line-height:1.2;margin-top:4px}.score-value small{font-size:15px;letter-spacing:0;color:#b6c4d4;margin-left:5px}.grade-row{display:flex;align-items:center;gap:10px;margin-top:9px}.grade-row .grade{font-size:25px;font-weight:900;color:var(--gold);letter-spacing:-.02em}.grade-row .grade-text{font-size:12px;color:var(--muted)}.progress{height:7px;border-radius:9px;background:#344358;overflow:hidden;margin-top:15px}.progress>span{display:block;width:0;height:100%;background:linear-gradient(90deg,#a7b7cb,var(--gold));border-radius:9px;transition:width .2s}.next-step{margin-top:9px;font-size:11px;color:#b7c6d7;line-height:1.55}
+    .breakdown{padding:0 20px 22px}.breakdown h3{font-size:13px;margin:0 0 12px;color:#dfe8f5}.bar-item+.bar-item{margin-top:12px}.bar-header{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#b8c9db;margin-bottom:7px}.bar-header strong{color:#f6f9ff;font-size:13px;font-variant-numeric:tabular-nums}.bar-track{height:7px;border-radius:9px;background:#29384c;overflow:hidden}.bar-track span{display:block;width:0;height:100%;border-radius:9px;transition:width .2s}.bar-track .b1{background:#f0cf7a}.bar-track .b2{background:#ce9fe6}.bar-track .b3{background:#7ed5ed}.bar-track .b4{background:#7fd9b0}
+    .reference-body{padding:0 17px 19px}.reference-note{color:var(--muted);font-size:11px;margin:0 5px 13px;line-height:1.5}.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ref-card{border:1px solid #30435b;border-radius:12px;overflow:hidden;background:#101b2d;min-width:0}.ref-title{padding:11px 12px;background:#22324a;border-bottom:1px solid #30435b;font-size:12px;font-weight:800;line-height:1.35}.ref-card table{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed}.ref-card th{color:#b4c7dd;text-align:left;font-weight:650;font-size:10px;padding:9px 10px 7px}.ref-card th:last-child,.ref-card td:last-child{text-align:right}.ref-card td{padding:6px 10px;border-top:1px solid rgba(104,132,166,.13);color:#c8d6e6;font-variant-numeric:tabular-nums}.ref-card td:last-child{font-weight:800;color:#f2f5fc}.ref-card tr.active td{background:rgba(244,200,108,.16);color:#fff3d3}.ref-card tr.active td:last-child{color:var(--gold)}.ref-card tr.active td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
+    .grade-table{margin:12px 0 0;border:1px solid #30435b;border-radius:12px;overflow:hidden;background:#101b2d}.grade-table h3{font-size:12px;margin:0;padding:11px 12px;background:#22324a}.grade-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#26364b}.grade-cell{background:#111d30;text-align:center;padding:9px 5px}.grade-cell b{display:block;color:#f2d18b;font-size:14px}.grade-cell span{display:block;color:#9fb2ca;font-size:11px;margin-top:3px}.grade-cell.active{background:#3e392e;outline:1px solid #b89252;outline-offset:-1px}.footnote{margin-top:17px;border-top:1px solid #253750;padding-top:13px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:11px;color:#8195af}.footnote strong{font-weight:600;color:#a8b8cb}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+    @media(max-width:1280px){.layout{grid-template-columns:minmax(340px,1fr) minmax(280px,.9fr)}.reference{grid-column:1/-1}.ref-grid{grid-template-columns:repeat(4,1fr)}.grade-grid{grid-template-columns:repeat(8,1fr)}}
+    @media(max-width:800px){.shell{padding:22px 15px 36px}.masthead{flex-direction:column;margin-bottom:20px}.head-actions{width:100%;justify-content:flex-start}.layout{grid-template-columns:1fr}.reference{grid-column:auto}.ref-grid{grid-template-columns:1fr 1fr}.grade-grid{grid-template-columns:repeat(4,1fr)}}
+    @media(max-width:460px){.masthead h1{font-size:26px}.panel-head{padding:18px 16px 12px}.panel-body{padding:4px 14px 18px}.input-grid.three{gap:7px}.field{padding:10px 8px}.field input{font-size:18px;padding:8px 6px}.field label{font-size:11px}.ref-grid{gap:8px}.reference-body{padding:0 10px 14px}.ref-card td{padding:6px 7px;font-size:10.5px}.ref-card th{padding:8px 7px;font-size:9px}.ref-title{font-size:11px;padding:9px 8px}.scorecard,.result-top{margin-left:14px;margin-right:14px}.breakdown{padding-left:14px;padding-right:14px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div>
+        <div class="brandline"><span class="emblem" aria-hidden="true">✦</span> HONOR OF KINGS · HOK</div>
+        <h1>실력 평균 계산기</h1>
+        <p class="subtitle">전적을 입력하면 4가지 지표를 100점 만점으로 환산하고, 총점과 등급을 즉시 계산합니다.</p>
+      </div>
+      <div class="head-actions">
+        <button class="btn" type="button" id="reset">예시 값으로 초기화</button>
+        <button class="btn" type="button" id="clear">모두 지우기</button>
+        <button class="btn btn-gold" type="button" id="copy">결과 복사 ↗</button>
+      </div>
+    </header>
+    <div class="layout">
+      <section class="panel" aria-labelledby="input-title">
+        <div class="panel-head"><div><div class="eyebrow">01 · INPUT</div><h2 id="input-title">전적 입력</h2><p>엑셀 1시트 왼쪽 입력 영역</p></div><span class="pill">실시간 계산</span></div>
+        <div class="panel-body">
+          <div class="input-section"><h3 class="section-label">기본 전적</h3>
+            <div class="input-grid three">
+              <div class="field"><label for="matches">매치 수 <span class="unit">(판)</span></label><input id="matches" type="number" inputmode="numeric" min="0" step="1" value="297"></div>
+              <div class="field"><label for="winRate">승률 <span class="unit">(%)</span></label><input id="winRate" type="number" inputmode="decimal" min="0" max="100" step="any" value="60.1"></div>
+              <div class="field"><label for="performance">종합 득점</label><input id="performance" type="number" inputmode="decimal" min="0" max="100" step="any" value="73.8"></div>
+            </div>
+          </div>
+          <div class="input-section"><h3 class="section-label">MVP / SVP 획득 횟수</h3>
+            <div class="input-grid two">
+              <div class="field yellow"><label for="mvp">MVP <span class="unit">(회)</span></label><input id="mvp" type="number" inputmode="numeric" min="0" step="1" value="50"></div>
+              <div class="field pink"><label for="svp">SVP <span class="unit">(회)</span></label><input id="svp" type="number" inputmode="numeric" min="0" step="1" value="40"></div>
+            </div>
+          </div>
+          <div class="input-section"><h3 class="section-label">평점 획득 횟수</h3>
+            <div class="input-grid one">
+              <div class="field purple"><label for="sss">평점 SSS <span class="unit">(회)</span></label><input id="sss" type="number" inputmode="numeric" min="0" step="1" value="12"></div>
+              <div class="field orange"><label for="ss">평점 SS <span class="unit">(회)</span></label><input id="ss" type="number" inputmode="numeric" min="0" step="1" value="44"></div>
+              <div class="field ice"><label for="s">평점 S <span class="unit">(회)</span></label><input id="s" type="number" inputmode="numeric" min="0" step="1" value="68"></div>
+            </div>
+          </div>
+          <p class="input-hint">숫자만 입력하세요. MVP·SVP 합계 및 SSS·SS·S 합계는 각각 전체 매치 수를 초과할 수 없습니다.</p>
+          <div id="error" class="error" role="alert" hidden></div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="result-title">
+        <div class="panel-head"><div><div class="eyebrow">02 · RESULT</div><h2 id="result-title">계산 결과</h2><p>엑셀 1시트 중앙 결과 영역</p></div></div>
+        <div class="result-top">
+          <div class="stat-row"><div class="stat-title"><strong>MVP / SVP</strong>평균 획득 주기</div><div class="stat-number"><span id="mvpCycle">3.30</span><small>판마다 1회</small></div></div>
+          <div class="stat-row"><div class="stat-title"><strong>평점 S 이상</strong>평균 획득 주기</div><div class="stat-number"><span id="sCycle">2.39</span><small>판마다 1회</small></div></div>
+        </div>
+        <div class="scorecard" aria-live="polite" aria-atomic="true">
+          <div class="kicker">실력 평균 · 통합 점수</div>
+          <div class="score-value"><span id="total">260</span><small>/ 400점</small></div>
+          <div class="grade-row"><span class="grade" id="grade">S</span><span class="grade-text">등급</span></div>
+          <div class="progress" aria-hidden="true"><span id="gradeProgress"></span></div>
+          <div class="next-step" id="nextStep">다음 등급 SS까지 40점 남았습니다.</div>
+        </div>
+        <div class="breakdown"><h3>항목별 환산 점수</h3>
+          <div class="bar-item"><div class="bar-header"><span>MVP / SVP</span><strong id="mvpScore">60 / 100</strong></div><div class="bar-track"><span class="b1" id="mvpBar"></span></div></div>
+          <div class="bar-item"><div class="bar-header"><span>평점 S 이상</span><strong id="sScore">70 / 100</strong></div><div class="bar-track"><span class="b2" id="sBar"></span></div></div>
+          <div class="bar-item"><div class="bar-header"><span>승률</span><strong id="winScore">80 / 100</strong></div><div class="bar-track"><span class="b3" id="winBar"></span></div></div>
+          <div class="bar-item"><div class="bar-header"><span>종합 득점</span><strong id="performanceScore">50 / 100</strong></div><div class="bar-track"><span class="b4" id="performanceBar"></span></div></div>
+        </div>
+      </section>
+
+      <aside class="panel reference" aria-labelledby="reference-title">
+        <div class="panel-head"><div><div class="eyebrow">03 · REFERENCE</div><h2 id="reference-title">점수 환산표</h2><p>엑셀 1시트 오른쪽 참고 표</p></div></div>
+        <div class="reference-body"><p class="reference-note">현재 입력값에 해당하는 기준을 <strong style="color:var(--gold)">금색</strong>으로 표시합니다. 네 항목의 점수를 합산해 최종 등급을 결정합니다.</p>
+          <div class="ref-grid" id="refGrid"></div>
+          <div class="grade-table"><h3>실력 평균 · 등급 기준</h3><div class="grade-grid" id="gradeGrid"></div></div>
+          <div class="footnote"><span>Made by <strong>아리엘#Ariel</strong> · 원본 엑셀 2025.11.26</span><span>원본 수식 기준 · 점수 구간제</span></div>
+        </div>
+      </aside>
+    </div>
+    <p class="sr-only" id="announcement" aria-live="polite"></p>
+  </main>
+  <script>
+    'use strict';
+    // 원본 엑셀 「실력 평균 계산기」의 점수표와 「계산기」 시트의 로직을 이식했습니다.
+    const DEFAULTS={matches:297,winRate:60.1,performance:73.8,mvp:50,svp:40,sss:12,ss:44,s:68};
+    const KEYS=Object.keys(DEFAULTS);
+    const mvpThresholds=[1.5,2,2.4,2.9,3.5,4.2,5,6.5,8.2,10];
+    const sThresholds=[1.3,1.8,2.3,2.7,3.4,4,4.8,6.3,7.2,8];
+    const winThresholds=[80,70,60,55,53,50,47,45,42,40];
+    const performanceThresholds=[90,85,83,80,75,70,65,60,55,50];
+    const GRADE_BANDS=[{min:350,name:'SSS'},{min:300,name:'SS'},{min:250,name:'S'},{min:200,name:'A+'},{min:150,name:'A'},{min:100,name:'B'},{min:50,name:'C'},{min:0,name:'D'}];
+    const $=id=>document.getElementById(id);
+    const toFixedTrim=n=>Number(n).toFixed(2).replace(/\.?0+$/,'');
+    const trunc2=n=>Math.trunc((n+Number.EPSILON)*100)/100;
+    function lowerIsBetter(value,thresholds){
+      if(value===null)return {score:0,index:10};
+      for(let i=0;i<thresholds.length;i++)if(value<thresholds[i])return {score:100-i*10,index:i};
+      return {score:0,index:10};
+    }
+    function higherIsBetter(value,thresholds){
+      for(let i=0;i<thresholds.length;i++)if(value>=thresholds[i])return {score:100-i*10,index:i};
+      return {score:0,index:10};
+    }
+    function readInputs(){
+      const values={};const errors=[];
+      for(const key of KEYS){
+        const el=$(key);el.removeAttribute('aria-invalid');
+        const raw=el.value.trim();const num=Number(raw);
+        if(raw===''||!Number.isFinite(num)||num<0){errors.push(`${el.labels[0].textContent.trim()}에 0 이상의 숫자를 입력해 주세요.`);el.setAttribute('aria-invalid','true');continue;}
+        if(['matches','mvp','svp','sss','ss','s'].includes(key)&&!Number.isInteger(num)){errors.push(`${el.labels[0].textContent.trim()}는 정수여야 합니다.`);el.setAttribute('aria-invalid','true');continue;}
+        if(['winRate','performance'].includes(key)&&num>100){errors.push(`${el.labels[0].textContent.trim()}는 100 이하로 입력해 주세요.`);el.setAttribute('aria-invalid','true');continue;}
+        values[key]=num;
+      }
+      if(!errors.length){
+        if(values.mvp+values.svp>values.matches){errors.push('MVP와 SVP 횟수의 합계가 매치 수보다 많습니다.');$('mvp').setAttribute('aria-invalid','true');$('svp').setAttribute('aria-invalid','true');}
+        if(values.sss+values.ss+values.s>values.matches){errors.push('평점 SSS, SS, S 횟수의 합계가 매치 수보다 많습니다.');for(const k of ['sss','ss','s'])$(k).setAttribute('aria-invalid','true');}
+      }
+      return {values,errors};
+    }
+    function calculate(v){
+      const mvpCount=v.mvp+v.svp,sCount=v.sss+v.ss+v.s;
+      const mvpCycle=mvpCount?trunc2(v.matches/mvpCount):null;
+      const sCycle=sCount?trunc2(v.matches/sCount):null;
+      const mvpResult=lowerIsBetter(mvpCycle,mvpThresholds);
+      const sResult=lowerIsBetter(sCycle,sThresholds);
+      const winResult=higherIsBetter(v.winRate,winThresholds);
+      const performanceResult=higherIsBetter(v.performance,performanceThresholds);
+      const total=mvpResult.score+sResult.score+winResult.score+performanceResult.score;
+      const grade=GRADE_BANDS.find(g=>total>=g.min);
+      return {mvpCycle,sCycle,mvpResult,sResult,winResult,performanceResult,total,grade};
+    }
+    const TABLES=[
+      {title:'MVP / SVP',subtitle:'획득 주기',thresholds:mvpThresholds,kind:'low',result:'mvpResult',unit:'판'},
+      {title:'승률',subtitle:'%',thresholds:winThresholds,kind:'high',result:'winResult',unit:'%'},
+      {title:'평점 S 이상',subtitle:'획득 주기',thresholds:sThresholds,kind:'low',result:'sResult',unit:'판'},
+      {title:'종합 득점',subtitle:'점',thresholds:performanceThresholds,kind:'high',result:'performanceResult',unit:'점'}
+    ];
+    function describeRange(table,i){
+      const t=table.thresholds;
+      if(table.kind==='low')return i===10?`${toFixedTrim(t[9])}판 이상`:`${toFixedTrim(t[i])}판 미만`;
+      return i===10?`${t[9]}${table.unit} 미만`:`${t[i]}${table.unit} 이상`;
+    }
+    function buildReference(){
+      $('refGrid').innerHTML=TABLES.map((table,tableIndex)=>{
+        const rows=Array.from({length:11},(_,i)=>`<tr data-table="${tableIndex}" data-index="${i}"><td>${describeRange(table,i)}</td><td>${100-i*10}</td></tr>`).join('');
+        return `<div class="ref-card"><div class="ref-title">${table.title}</div><table><thead><tr><th>${table.subtitle} 기준</th><th>환산 점수</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      }).join('');
+      $('gradeGrid').innerHTML=GRADE_BANDS.map(g=>`<div class="grade-cell" data-grade="${g.name}"><b>${g.name}</b><span>${g.min}점 이상</span></div>`).join('');
+    }
+    let latest=null;
+    function update(){
+      const {values,errors}=readInputs();
+      $('error').hidden=!errors.length;
+      $('error').textContent=errors.join(' ');
+      if(errors.length){latest=null;for(const id of ['mvpCycle','sCycle','total','grade'])$(id).textContent='—';$('nextStep').textContent='입력값을 확인하면 결과가 다시 계산됩니다.';$('gradeProgress').style.width='0%';for(const id of ['mvpScore','sScore','winScore','performanceScore'])$(id).textContent='— / 100';for(const id of ['mvpBar','sBar','winBar','performanceBar'])$(id).style.width='0%';document.querySelectorAll('.ref-card tr.active,.grade-cell.active').forEach(el=>el.classList.remove('active'));return;}
+      const r=calculate(values);latest={values,...r};
+      $('mvpCycle').textContent=r.mvpCycle===null?'—':toFixedTrim(r.mvpCycle);
+      $('sCycle').textContent=r.sCycle===null?'—':toFixedTrim(r.sCycle);
+      $('total').textContent=r.total;
+      $('grade').textContent=r.grade.name;
+      const gradeIndex=GRADE_BANDS.findIndex(g=>g.name===r.grade.name);
+      if(gradeIndex===0){$('gradeProgress').style.width='100%';$('nextStep').textContent='최고 등급 SSS를 달성했습니다.';}
+      else{const next=GRADE_BANDS[gradeIndex-1],min=r.grade.min;const remaining=next.min-r.total;$('gradeProgress').style.width=`${Math.max(0,Math.min(100,(r.total-min)/(next.min-min)*100))}%`;$('nextStep').textContent=`다음 등급 ${next.name}까지 ${remaining}점 남았습니다.`;}
+      for(const [name,key] of [['mvp','mvpResult'],['s','sResult'],['win','winResult'],['performance','performanceResult']]){$(name+'Score').textContent=`${r[key].score} / 100`;$(name+'Bar').style.width=r[key].score+'%';}
+      document.querySelectorAll('.ref-card tr').forEach(el=>el.classList.toggle('active',r[TABLES[Number(el.dataset.table)].result].index===Number(el.dataset.index)));
+      document.querySelectorAll('.grade-cell').forEach(el=>el.classList.toggle('active',el.dataset.grade===r.grade.name));
+    }
+    function applyValues(v){for(const key of KEYS)$(key).value=v[key];update();}
+    KEYS.forEach(key=>$(key).addEventListener('input',update));
+    $('reset').addEventListener('click',()=>applyValues(DEFAULTS));
+    $('clear').addEventListener('click',()=>applyValues(Object.fromEntries(KEYS.map(k=>[k,0]))));
+    $('copy').addEventListener('click',async()=>{
+      if(!latest){$('announcement').textContent='입력값을 먼저 확인해 주세요.';return;}
+      const r=latest;
+      const text=`[HOK 실력 평균 계산 결과]\n매치 수: ${r.values.matches}판 / 승률: ${r.values.winRate}% / 종합 득점: ${r.values.performance}점\nMVP: ${r.values.mvp}회 / SVP: ${r.values.svp}회 / SSS: ${r.values.sss}회 / SS: ${r.values.ss}회 / S: ${r.values.s}회\nMVP·SVP 주기: ${r.mvpCycle===null?'획득 없음':toFixedTrim(r.mvpCycle)+'판'} / S 이상 주기: ${r.sCycle===null?'획득 없음':toFixedTrim(r.sCycle)+'판'}\n항목별 점수: MVP/SVP ${r.mvpResult.score}, S 이상 ${r.sResult.score}, 승률 ${r.winResult.score}, 종합 득점 ${r.performanceResult.score}\n실력 평균: ${r.total}/400점 (${r.grade.name}등급)`;
+      try{
+        if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
+        else{const textarea=document.createElement('textarea');textarea.value=text;textarea.style.position='fixed';textarea.style.opacity='0';document.body.append(textarea);textarea.select();if(!document.execCommand('copy'))throw Error('복사 지원 안 됨');textarea.remove();}
+        const button=$('copy'),before=button.textContent;button.textContent='복사 완료 ✓';$('announcement').textContent='계산 결과를 복사했습니다.';setTimeout(()=>button.textContent=before,1700);
+      }catch(e){$('announcement').textContent='복사가 지원되지 않는 브라우저입니다.';alert('복사에 실패했습니다. 브라우저의 클립보드 권한을 확인해 주세요.');}
+    });
+    buildReference();update();
+    // 브라우저 콘솔에서 테스트 가능: HOKCalculator.calculate({...})
+    window.HOKCalculator=Object.freeze({calculate,DEFAULTS,lowerIsBetter,higherIsBetter});
+  </script>
+</body>
+</html>
